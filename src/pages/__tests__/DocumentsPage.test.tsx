@@ -24,6 +24,7 @@ vi.mock('../../services/documents.api', () => ({
   documentsApi: {
     findAll: vi.fn(),
     findOne: vi.fn(),
+    fetchContentArrayBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(0)),
     createAndAnalyze: vi.fn(),
     retryAnalysis: vi.fn(),
     deleteMany: vi.fn(),
