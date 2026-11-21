@@ -4,8 +4,7 @@ import { authApi, GoogleLoginPayload } from '../services/auth.api';
 import {
   clearStoredSession,
   getStoredToken,
-  getStoredUserJson,
-  setStoredSession,
+  setStoredToken,
 } from '../services/api-client';
 
 interface AuthContextValue {
@@ -20,15 +19,7 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserProfile | null>(() => {
-    const raw = getStoredUserJson();
-    if (!raw) return null;
-    try {
-      return JSON.parse(raw) as UserProfile;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -42,7 +33,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .getProfile()
       .then((profile) => {
         setUser(profile);
-        setStoredSession(token, JSON.stringify(profile));
       })
       .catch(() => {
         clearStoredSession();
@@ -55,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = useCallback(async (payload: GoogleLoginPayload) => {
     const response = await authApi.loginWithGoogle(payload);
-    setStoredSession(response.accessToken, JSON.stringify(response.user));
+    setStoredToken(response.accessToken);
     setUser(response.user);
   }, []);
 
@@ -66,7 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       picture:
         'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
     });
-    setStoredSession(response.accessToken, JSON.stringify(response.user));
+    setStoredToken(response.accessToken);
     setUser(response.user);
   }, []);
 
