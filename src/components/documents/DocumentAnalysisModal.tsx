@@ -20,7 +20,6 @@ export const DocumentAnalysisModal: React.FC<DocumentAnalysisModalProps> = ({
     return null;
   }
 
-  const isImage = document.mimeType?.startsWith('image/');
   const fileUrl = document.downloadUrl || document.s3Url;
 
   return (
@@ -49,11 +48,12 @@ export const DocumentAnalysisModal: React.FC<DocumentAnalysisModalProps> = ({
           </button>
         </div>
 
-        {/* Miniature Preview Box */}
+        {/* Miniature Preview Box (Real Document Preview from AWS S3) */}
         <DocumentMiniaturePreview
           sizeBytes={document.sizeBytes}
           extensionOrName={document.extension || document.originalName}
-          imagePreviewUrl={isImage ? fileUrl : null}
+          mimeType={document.mimeType}
+          documentId={document.id}
           downloadUrl={fileUrl}
         />
 
