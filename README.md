@@ -101,4 +101,16 @@ A suíte de testes valida a renderização da sidebar com dados do Google, estad
 ```bash
 npm run test
 ```
+
+---
+
+## 7. Deploy na Vercel
+
+1. Importe o repositório `analise-docs-front` na [Vercel](https://vercel.com/).
+2. Configure as **Environment Variables** no painel da Vercel:
+   - `VITE_API_URL`: `https://<IP_EC2>.sslip.io/api` (ex: `https://3.143.230.43.sslip.io/api`)
+   - `VITE_GOOGLE_CLIENT_ID`: mesmo Client ID público configurado no Back-end.
+3. O arquivo `vercel.json` já garante o rewrite de rotas SPA (`/app/documentos`, `/login`) sem erro 404.
+4. No **Google Cloud Console**, adicione a URL final gerada pela Vercel em **Origens JavaScript autorizadas** do Client ID OAuth.
+
 "# analise-docs-front" 
