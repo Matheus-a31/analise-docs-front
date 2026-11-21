@@ -21,28 +21,18 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
   const [title, setTitle] = useState('');
   const [instruction, setInstruction] = useState('');
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!file) {
       setTitle('');
       setInstruction('');
       setValidationError(null);
-      setImagePreviewUrl(null);
       return;
     }
 
     setTitle(file.name);
     setInstruction('');
     setValidationError(null);
-
-    if (file.type.startsWith('image/')) {
-      const objectUrl = URL.createObjectURL(file);
-      setImagePreviewUrl(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
-    } else {
-      setImagePreviewUrl(null);
-    }
   }, [file]);
 
   if (!file) {
@@ -102,11 +92,12 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
           </button>
         </div>
 
-        {/* Miniature Preview Box */}
+        {/* Miniature Preview Box (Real Document Preview) */}
         <DocumentMiniaturePreview
           sizeBytes={file.size}
           extensionOrName={file.name}
-          imagePreviewUrl={imagePreviewUrl}
+          mimeType={file.type}
+          file={file}
         />
 
         {/* Form Fields */}
