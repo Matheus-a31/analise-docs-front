@@ -83,7 +83,7 @@ export const LoginPage: React.FC = () => {
                 Jus Digital
               </span>
               <span className="text-xs text-white/80">
-                Escritório · Advogados associados
+                Seu escritório muito mais inteligente com IA
               </span>
             </div>
           </div>
