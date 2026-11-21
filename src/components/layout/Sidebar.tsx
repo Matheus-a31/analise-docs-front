@@ -24,13 +24,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, onLogout }) => {
     <div className="flex flex-col justify-between h-full w-[235px] bg-[#2E9E5B] text-white select-none">
       {/* Top Workspace Header */}
       <div>
-        <div className="px-5 pt-6 pb-4 flex items-center justify-between">
-          <div>
+        <div className="px-5 pt-6 pb-4 flex items-center justify-between gap-2">
+          <div className="min-w-0 flex-1">
             <h2 className="text-[15px] font-bold text-white leading-tight tracking-tight">
               Escritório
             </h2>
-            <p className="text-[12px] text-white/80 mt-0.5 font-normal">
-              Advogados associados
+            <p
+              className="text-[12px] text-white/80 mt-0.5 font-normal truncate"
+              title={displayName}
+            >
+              {displayName}
             </p>
           </div>
           <button
@@ -102,9 +105,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, onLogout }) => {
     <>
       {/* Mobile Header Bar */}
       <div className="md:hidden flex items-center justify-between bg-[#2E9E5B] text-white px-4 py-3 shrink-0">
-        <div>
-          <span className="text-sm font-bold">Escritório</span>
-          <span className="text-xs text-white/80 ml-2">Advogados associados</span>
+        <div className="min-w-0 flex items-center truncate">
+          <span className="text-sm font-bold shrink-0">Escritório</span>
+          <span className="text-xs text-white/80 ml-2 truncate">{displayName}</span>
         </div>
         <button
           type="button"
