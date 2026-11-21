@@ -59,10 +59,14 @@ export const DocumentAnalysisModal: React.FC<DocumentAnalysisModalProps> = ({
 
         {/* Título Section matching .insp/11549.jpeg */}
         <div className="mt-4">
-          <label className="block text-[13px] font-medium text-gray-600 mb-1.5">
+          <p
+            id="analysis-doc-title-label"
+            className="block text-[13px] font-medium text-gray-600 mb-1.5"
+          >
             Título
-          </label>
+          </p>
           <div
+            aria-labelledby="analysis-doc-title-label"
             data-testid="analysis-modal-doc-title"
             className="w-full bg-[#F3F4F6] text-gray-800 text-[14px] rounded-lg px-3.5 py-2.5 truncate"
           >
@@ -73,9 +77,12 @@ export const DocumentAnalysisModal: React.FC<DocumentAnalysisModalProps> = ({
         {/* Analise da IA Section matching .insp/11549.jpeg */}
         <div className="mt-4">
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-[13px] font-medium text-gray-600">
+            <p
+              id="analysis-ai-label"
+              className="block text-[13px] font-medium text-gray-600"
+            >
               Analise da IA
-            </label>
+            </p>
             {document.analysisStatus === 'FAILED' && (
               <button
                 type="button"
