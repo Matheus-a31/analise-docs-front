@@ -125,8 +125,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ user, onLogout }) => {
       {/* Mobile Drawer Sidebar */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex">
-          <div
-            className="fixed inset-0 bg-black/40 transition-opacity"
+          <button
+            type="button"
+            aria-label="Fechar menu lateral"
+            className="fixed inset-0 w-full h-full bg-black/40 border-0 p-0 cursor-default transition-opacity"
             onClick={() => setMobileOpen(false)}
           />
           <div className="relative z-10 h-full">{sidebarContent}</div>
