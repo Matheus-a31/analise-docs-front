@@ -1,5 +1,5 @@
 import { CreateDocumentPayload, DocumentItem } from '../types/document.types';
-import { apiRequest } from './api-client';
+import { API_BASE_URL, apiRequest, getStoredToken } from './api-client';
 
 export const documentsApi = {
   findAll(): Promise<DocumentItem[]> {
@@ -12,6 +12,21 @@ export const documentsApi = {
     return apiRequest<DocumentItem>(`/documents/${id}`, {
       method: 'GET',
     });
+  },
+
+  async fetchContentArrayBuffer(id: string): Promise<ArrayBuffer> {
+    const token = getStoredToken();
+    const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+    const response = await fetch(`${API_BASE_URL}/documents/${id}/content`, {
+      method: 'GET',
+      headers,
+    });
+
+    if (!response.ok) {
+      throw new Error('Não foi possível carregar o conteúdo do documento para pré-visualização.');
+    }
+
+    return response.arrayBuffer();
   },
 
   createAndAnalyze(payload: CreateDocumentPayload): Promise<DocumentItem> {
