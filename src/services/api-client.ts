@@ -1,26 +1,32 @@
 const STORAGE_TOKEN_KEY = 'jus_digital_access_token';
-const STORAGE_USER_KEY = 'jus_digital_user';
+const JWT_TOKEN_PATTERN = /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 
 export const API_BASE_URL =
   (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '') ||
   'http://localhost:3000/api';
 
-export function getStoredToken(): string | null {
-  return localStorage.getItem(STORAGE_TOKEN_KEY);
+function extractValidJwt(rawToken: string | null): string | null {
+  if (!rawToken) {
+    return null;
+  }
+  const trimmed = rawToken.trim();
+  return JWT_TOKEN_PATTERN.test(trimmed) ? trimmed : null;
 }
 
-export function setStoredSession(token: string, userJson: string): void {
-  localStorage.setItem(STORAGE_TOKEN_KEY, token);
-  localStorage.setItem(STORAGE_USER_KEY, userJson);
+export function getStoredToken(): string | null {
+  return extractValidJwt(localStorage.getItem(STORAGE_TOKEN_KEY));
+}
+
+export function setStoredToken(token: string): void {
+  const validToken = extractValidJwt(token);
+  if (!validToken) {
+    throw new Error('Token de autenticação em formato inválido.');
+  }
+  localStorage.setItem(STORAGE_TOKEN_KEY, validToken);
 }
 
 export function clearStoredSession(): void {
   localStorage.removeItem(STORAGE_TOKEN_KEY);
-  localStorage.removeItem(STORAGE_USER_KEY);
-}
-
-export function getStoredUserJson(): string | null {
-  return localStorage.getItem(STORAGE_USER_KEY);
 }
 
 export async function apiRequest<T>(
@@ -53,7 +59,6 @@ export async function apiRequest<T>(
           : errorData.message;
       }
     } catch {
-      // Fallback to statusText if response is not JSON
       if (response.statusText) {
         errorMessage = response.statusText;
       }
